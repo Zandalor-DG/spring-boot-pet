@@ -1,17 +1,17 @@
 package org.springboot.pet.controller;
 
-import org.springboot.pet.entity.User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springboot.pet.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
-import java.util.concurrent.atomic.AtomicLong;
+@Controller
+public class UserController {
 
-public class GreetingController {
- private static final String template = "Hello, %s!";
- private final AtomicLong counter = new AtomicLong();
+    private final UserRepository userRepository;
 
- @GetMapping("/user")
-    public User get_user(@RequestParam(value = "name", defaultValue = "World") String name) {
-     return new User(counter.incrementAndGet(), String.format(template, name));
- }
+    @Autowired
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
 }

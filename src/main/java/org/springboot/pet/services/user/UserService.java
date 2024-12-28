@@ -1,13 +1,13 @@
-package org.springboot.pet.services;
+package org.springboot.pet.services.user;
 
-import org.springboot.pet.dto.UserDto;
+import org.springboot.pet.dto.user.CreateUserDto;
+import org.springboot.pet.dto.user.GetUserDto;
+import org.springboot.pet.entity.User;
 import org.springboot.pet.exception.DataGetException;
 import org.springboot.pet.exception.DataRestrictionException;
 
 public interface UserService {
-    UserDto findUser(long id) throws DataGetException;
+    GetUserDto getUser(Long id) throws DataGetException;
 
-    UserDto updateUser(UserDto userDto) throws DataGetException;
-
-    String createUser(UserDto userDto) throws DataRestrictionException;
+    GetUserDto createUser(CreateUserDto createUserDto) throws DataRestrictionException;
 }
