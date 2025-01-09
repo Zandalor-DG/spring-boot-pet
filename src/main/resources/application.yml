@@ -1,9 +1,15 @@
+# http://localhost:8080/api/swagger-ui/index.html
+
 server:
   port: ${APP_PORT:8080}
   servlet:
-    context-path: /
+    context-path: /api
 
 spring:
+  application:
+    name: spring-boot-pet
+  main:
+    allow-circular-references: true
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5433/postgres
@@ -12,7 +18,10 @@ spring:
   jpa:
     properties:
       hibernate:
+        ddl-auto: update
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
 springdoc:
   swagger-ui:

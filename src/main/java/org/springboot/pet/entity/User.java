@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
+import org.springboot.pet.dto.user.AuthUserDto;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -45,9 +46,9 @@ public class User implements Serializable {
     @Column(name = "password", nullable = false, length = 50)
     private String password;
 
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
+    public User(AuthUserDto authUserDto) {
+        this.email = authUserDto.getUserEmail();
+        this.password = authUserDto.getPassword();
     }
 
 

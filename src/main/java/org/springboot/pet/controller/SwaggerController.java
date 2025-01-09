@@ -29,7 +29,7 @@ public class SwaggerController {
     @Value("${server.port:8080}")
     private int serverPort;
 
-    @Value("$server.servlet.context-path:/")
+    @Value("${server.servlet.context-path:/}")
     private String contextPath;
 
     @PostConstruct
