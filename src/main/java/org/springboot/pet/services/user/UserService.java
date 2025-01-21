@@ -1,19 +1,14 @@
 package org.springboot.pet.services.user;
 
 import lombok.RequiredArgsConstructor;
-import org.springboot.pet.dto.user.GetUserDto;
+import org.springboot.pet.dto.user.UpdateUserDto;
 import org.springboot.pet.entity.User;
 import org.springboot.pet.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,24 +20,40 @@ public class UserService implements IUserService {
     private PasswordEncoder encoder;
 
     @Override
-    public GetUserDto loadUserByUserEmail(String userEmail) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByEmail(userEmail);
-
-        return user.map(GetUserDto::new)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + userEmail));
-    }
-
-    @Override
-    public User addUser(User user) {
+    public User createUser(User user) {
         user.setPassword(encoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByEmail(username);
+    public User updateUser(UpdateUserDto user, long id) throws Exception {
+        User searchUser = userRepository.findById(id).orElseThrow(() -> new Exception("No dara FOUND"));
 
-        return user.map(UserInfoDetails::new)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+        searchUser.setFirstName(user.getNewFirstName());
+        searchUser.setSecondName(user.getNewSecondName());
+        searchUser.setPassword(encoder.encode(user.getNewPassword()));
+
+        return userRepository.save(searchUser);
+    }
+
+    @Override
+    public User getUserById(long id) throws UsernameNotFoundException {
+        return userRepository.findById(id).orElseThrow(()-> new UsernameNotFoundException("User not found: " + String.valueOf(id)));
+    }
+
+    @Override
+    public void deleteUser(long id) throws Exception {
+        userRepository.deleteById(getUserById(id).getId());
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        try {
+            User user = userRepository.findByEmail(username);
+
+            return new UserInfoDetails(user);
+        } catch (Exception e) {
+            throw new UsernameNotFoundException("User not found: " + username);
+        }
     }
 }

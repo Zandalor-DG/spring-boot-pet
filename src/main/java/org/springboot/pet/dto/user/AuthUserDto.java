@@ -6,8 +6,6 @@ import lombok.Setter;
 import lombok.Value;
 
 @Value
-@Setter
-@Getter
 @Schema(description = "Авторизация пользователя")
 public class AuthUserDto {
     @Schema(title = "Email пользователя")

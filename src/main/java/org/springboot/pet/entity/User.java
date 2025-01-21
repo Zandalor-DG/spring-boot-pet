@@ -10,6 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.proxy.HibernateProxy;
 import org.springboot.pet.dto.user.AuthUserDto;
+import org.springboot.pet.dto.user.RegisterUserDto;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -34,23 +35,26 @@ public class User implements Serializable {
     private String email;
 
     @Size(max = 50)
-    @Column(name = "first_name", nullable = false, length = 50)
-    private String first_name;
+    @NotNull
+    @Column(name = "firstName", nullable = false, length = 50)
+    private String firstName;
 
     @Size(max = 50)
-    @Column(name = "second_name", nullable = false, length = 50)
-    private String second_name;
+    @NotNull
+    @Column(name = "secondName", nullable = false, length = 50)
+    private String secondName;
 
     @Size(max = 50)
     @NotNull
     @Column(name = "password", nullable = false, length = 50)
     private String password;
 
-    public User(AuthUserDto authUserDto) {
-        this.email = authUserDto.getUserEmail();
-        this.password = authUserDto.getPassword();
+    public User(RegisterUserDto registerUserDto) {
+        this.email = registerUserDto.getUserEmail();
+        this.firstName = registerUserDto.getFirstName();
+        this.secondName = registerUserDto.getSecondName();
+        this.password = registerUserDto.getPassword();
     }
-
 
     @Override
     public boolean equals(Object o) {
